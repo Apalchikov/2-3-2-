@@ -53,19 +53,19 @@
             position: absolute;
             top: 50px;
             right: 50px;
-            width: 150px;
-            height: 150px;
-            background: gold;
+            width: 100px; /* Уменьшили размер */
+            height: 100px; /* Уменьшили размер */
+            background: radial-gradient(circle at 70% 30%, gold, transparent);
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
         }
         .moon::before {
             content: '';
             position: absolute;
-            bottom: 50px;
-            left: 50px;
-            width: 100px;
-            height: 100px;
+            bottom: 40px; /* Сдвинули тень */
+            left: 40px; /* Сдвинули тень */
+            width: 80px;
+            height: 80px;
             background: black;
             border-radius: 50%;
         }
@@ -153,6 +153,60 @@
             background: linear-gradient(45deg, #ffcc00, gold);
         }
 
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            text-align: left;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: gold;
+        }
+        .modal-option {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .modal-option:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
         /* Индикаторы карусели */
         .carousel-indicators {
             display: flex;
@@ -228,6 +282,7 @@
     <!-- Модальное окно для выбора способа получения -->
     <div class="modal" id="pickup-modal">
         <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">×</button>
             <div class="modal-title">Выберите способ получения:</div>
             <div class="modal-option" onclick="selectOption('pickup', 'self')">
                 Самовывоз
@@ -241,6 +296,7 @@
     <!-- Модальное окно для выбора способа оплаты -->
     <div class="modal" id="payment-modal">
         <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">×</button>
             <div class="modal-title">Выберите способ оплаты:</div>
             <div class="modal-option" onclick="selectOption('payment', 'transfer')">
                 Перевод
