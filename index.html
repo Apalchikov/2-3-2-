@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Магазин одежды</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Магазин одежды</h1>
+    </header>
+
+    <main>
+      <section id="catalog" class="catalog">
+        <!-- Товары будут загружены сюда -->
+      </section>
+
+      <section id="cart" class="cart hidden">
+        <h2>Корзина</h2>
+        <ul id="cart-items"></ul>
+        <button id="checkout-button">Оформить заказ</button>
+      </section>
+    </main>
+
+    <footer>
+      <button id="toggle-cart">Корзина</button>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
