@@ -12,21 +12,75 @@
             font-family: 'Arial', sans-serif;
             color: white;
             text-align: center;
-            background: linear-gradient(45deg, #000000, #333333); /* Градиентный фон */
             overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+            position: relative;
+        }
+
+        /* Динамический фон (ночное небо) */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: black;
+            animation: stars-flicker 10s infinite;
+        }
+        @keyframes stars-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: star-twinkle 5s infinite alternate;
+        }
+        @keyframes star-twinkle {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Луна */
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 150px;
+            height: 150px;
+            background: gold;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+        }
+        .moon::before {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            width: 100px;
+            height: 100px;
+            background: black;
+            border-radius: 50%;
         }
 
         /* Шапка */
         header {
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px); /* Размытие фона */
+            backdrop-filter: blur(10px);
         }
         h1 {
             font-size: 48px;
             font-weight: bold;
             color: gold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Тень для текста */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         /* Карусель товаров */
@@ -69,7 +123,7 @@
             transition: transform 0.3s ease;
         }
         .product-card:hover .product-image {
-            transform: scale(1.1); /* Масштабирование картинки при наведении */
+            transform: scale(1.1);
         }
         .product-name {
             font-size: 24px;
@@ -99,45 +153,6 @@
             background: linear-gradient(45deg, #ffcc00, gold);
         }
 
-        /* Модальное окно */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            width: 80%;
-            max-width: 400px;
-            text-align: left;
-            backdrop-filter: blur(10px);
-        }
-        .modal-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: gold;
-        }
-        .modal-option {
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .modal-option:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
         /* Индикаторы карусели */
         .carousel-indicators {
             display: flex;
@@ -159,6 +174,18 @@
     </style>
 </head>
 <body>
+    <!-- Динамический фон -->
+    <div class="background">
+        <div class="stars"></div>
+        <div class="moon"></div>
+        <!-- Анимированные звёзды -->
+        <div class="star" style="top: 10%; left: 20%; width: 2px; height: 2px;"></div>
+        <div class="star" style="top: 30%; left: 60%; width: 3px; height: 3px;"></div>
+        <div class="star" style="top: 50%; left: 80%; width: 4px; height: 4px;"></div>
+        <div class="star" style="top: 70%; left: 10%; width: 2px; height: 2px;"></div>
+        <div class="star" style="top: 90%; left: 40%; width: 3px; height: 3px;"></div>
+    </div>
+
     <header>
         <h1>DYNASTY</h1>
     </header>
