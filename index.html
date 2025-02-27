@@ -11,33 +11,40 @@
             font-family: Arial, sans-serif;
             color: white;
             text-align: center;
-
-            /* Фоновая картинка */
-            background-image: url('https://instapik.ru/wp-content/uploads/2020/08/dark-background.jpg'); /* Замените URL на вашу картинку */
-            background-size: cover; /* Масштабирует картинку для заполнения всего экрана */
-            background-position: center; /* Центрирует картинку */
-            background-repeat: no-repeat; /* Отключает повторение картинки */
+            background-color: black; /* Чёрный фон */
+            overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
         }
         header {
             padding: 20px;
-            background: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон для шапки */
+            background: rgba(0, 0, 0, 0.7); /* Полупрозрачный чёрный фон для шапки */
         }
         h1 {
             font-size: 36px;
             font-weight: bold;
             color: gold;
         }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+
+        /* Стили для карусели товаров */
+        .carousel {
+            display: flex;
+            overflow-x: auto; /* Включаем горизонтальную прокрутку */
+            scroll-snap-type: x mandatory; /* Привязка к элементам при скролле */
+            scroll-behavior: smooth; /* Плавная прокрутка */
             gap: 20px;
-            padding: 20px;
+            padding: 0 20px;
+        }
+        .carousel::-webkit-scrollbar {
+            display: none; /* Скрываем скроллбар */
         }
         .product-card {
-            background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон карточки */
+            flex: 0 0 100%; /* Каждая карточка занимает всю ширину экрана */
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid #ffffff44;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            scroll-snap-align: start; /* Элементы фиксируются при скролле */
             transition: transform 0.2s;
         }
         .product-card:hover {
@@ -45,17 +52,37 @@
         }
         .product-image {
             width: 100%;
-            height: 150px;
+            height: 300px; /* Высота изображения */
             object-fit: cover;
             border-radius: 10px;
         }
         .product-name {
-            font-size: 18px;
+            font-size: 24px;
             margin: 10px 0;
         }
         .product-price {
-            font-size: 16px;
+            font-size: 20px;
             color: gold;
+        }
+
+        /* Стрелки навигации */
+        .arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .arrow-left {
+            left: 20px;
+        }
+        .arrow-right {
+            right: 20px;
         }
     </style>
 </head>
@@ -63,31 +90,49 @@
     <header>
         <h1>DYNASTY</h1>
     </header>
-    <div class="product-grid">
+
+    <!-- Карусель товаров -->
+    <div class="carousel" id="carousel">
         <!-- Продукт 1 -->
-        <div class="product-card" onclick="alert('Вы выбрали продукт 1')">
-            <img src="https://via.placeholder.com/150" alt="Product 1" class="product-image">
-            <div class="product-name">Товар 1</div>
-            <div class="product-price">$99</div>
+        <div class="product-card">
+            <img src="https://static.insales-cdn.com/r/JBn0FfTLI1A/rs:fit:1000:0:1/q:100/plain/images/products/1/5852/655922908/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%BD%D0%B0%D1%8F_1.jpg@jpg" alt="Product 1" class="product-image">
+            <div class="product-name">это футболка вася</div>
+            <div class="product-price">$999</div>
         </div>
         <!-- Продукт 2 -->
-        <div class="product-card" onclick="alert('Вы выбрали продукт 2')">
-            <img src="https://via.placeholder.com/150" alt="Product 2" class="product-image">
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 2" class="product-image">
             <div class="product-name">Товар 2</div>
             <div class="product-price">$129</div>
         </div>
         <!-- Продукт 3 -->
-        <div class="product-card" onclick="alert('Вы выбрали продукт 3')">
-            <img src="https://via.placeholder.com/150" alt="Product 3" class="product-image">
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 3" class="product-image">
             <div class="product-name">Товар 3</div>
             <div class="product-price">$79</div>
         </div>
         <!-- Продукт 4 -->
-        <div class="product-card" onclick="alert('не тыкай сюда в разработке еще!')">
-            <img src="https://static.insales-cdn.com/images/products/1/2246/532457670/DSCF9161.JPG" alt="Product 4" class="product-image">
-            <div class="product-name">вася это футболка</div>
-            <div class="product-price">$999</div>
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 4" class="product-image">
+            <div class="product-name">Товар 4</div>
+            <div class="product-price">$149</div>
         </div>
     </div>
+
+    <!-- Стрелки навигации -->
+    <button class="arrow arrow-left" onclick="scrollCarousel(-1)">&#8249;</button>
+    <button class="arrow arrow-right" onclick="scrollCarousel(1)">&#8250;</button>
+
+    <script>
+        // Функция для прокрутки карусели
+        const carousel = document.getElementById('carousel');
+        const scrollCarousel = (direction) => {
+            const scrollAmount = direction * window.innerWidth; // Ширина экрана
+            carousel.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        };
+    </script>
 </body>
 </html>
