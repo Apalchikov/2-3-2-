@@ -220,5 +220,61 @@
             }
         };
     </script>
+    // Функция для отправки данных в Telegram
+const sendOrderToTelegram = (orderData) => {
+    const botToken = '8090185279:AAH5J9QOJkU96VsTyXIJhIe4kbsrswue7M0'; // Замените на токен вашего бота
+    const chatId = '380479732'; // Замените на ID вашего чата или группы
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+    // Формируем текст сообщения
+    const message = `
+        Новый заказ:
+        Товар: ${orderData.product}
+        Способ получения: ${orderData.deliveryMethod}
+        Способ оплаты: ${orderData.paymentMethod}
+    `;
+
+    // Отправляем запрос
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log('Заказ успешно отправлен:', data))
+    .catch(error => console.error('Ошибка отправки заказа:', error));
+};
+
+// Функция для получения выбранного способа получения
+const getSelectedDeliveryMethod = () => {
+    return localStorage.getItem('deliveryMethod') || 'Не указано';
+};
+
+// Вызов функции при завершении оформления заказа
+const selectOption = (currentStep, option) => {
+    if (currentStep === 'pickup') {
+        alert(`Вы выбрали способ получения: ${option === 'self' ? 'Самовывоз' : 'Доставка курьером'}`);
+        localStorage.setItem('deliveryMethod', option); // Сохраняем выбранный способ получения
+        closeModal();
+        openModal('payment');
+    } else if (currentStep === 'payment') {
+        const product = 'это футболка вася'; // Заглушка для названия товара
+        const deliveryMethod = getSelectedDeliveryMethod(); // Получаем выбранный способ получения
+        const paymentMethod = option; // Способ оплаты
+
+        // Отправляем данные в Telegram
+        sendOrderToTelegram({
+            product,
+            deliveryMethod,
+            paymentMethod
+        });
+
+        alert('Заказ успешно оформлен!');
+        closeModal();
+    }
+};
 </body>
 </html>
