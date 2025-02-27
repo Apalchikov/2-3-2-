@@ -1,41 +1,45 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background-color: #000; /* Черный фон */
+  color: #fff; /* Белый текст */
   margin: 0;
   padding: 0;
-  color: #333;
 }
 
 .container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 header h1 {
-  text-align: center;
-  color: #444;
+  font-size: 24px;
+  color: #fff; /* Белый текст */
+  text-transform: uppercase; /* Все буквы заглавные */
 }
 
 .catalog {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* 2 колонки */
   gap: 20px;
 }
 
 .product {
-  border: 1px solid #ddd;
+  border: 1px solid #333; /* Темная рамка */
   padding: 10px;
   text-align: center;
-  background-color: #fff;
+  background-color: #111; /* Темный фон для карточки */
   border-radius: 8px;
   transition: transform 0.2s;
 }
 
 .product:hover {
-  transform: scale(1.05);
+  transform: scale(1.05); /* Эффект при наведении */
 }
 
 .product img {
@@ -46,15 +50,16 @@ header h1 {
 .product h3 {
   font-size: 16px;
   margin: 10px 0;
+  color: #fff; /* Белый текст */
 }
 
 .product p {
   font-size: 14px;
-  color: #666;
+  color: #ccc; /* Светло-серый текст */
 }
 
 .product button {
-  background-color: #007bff;
+  background-color: #007bff; /* Синяя кнопка */
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -63,7 +68,7 @@ header h1 {
 }
 
 .product button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Темно-синий при наведении */
 }
 
 .cart {
@@ -83,7 +88,7 @@ header h1 {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #333; /* Темная граница */
 }
 
 footer {
@@ -92,7 +97,7 @@ footer {
 }
 
 footer button {
-  background-color: #28a745;
+  background-color: #28a745; /* Зеленая кнопка */
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -101,5 +106,5 @@ footer button {
 }
 
 footer button:hover {
-  background-color: #218838;
+  background-color: #218838; /* Темно-зеленый при наведении */
 }
