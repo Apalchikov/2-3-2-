@@ -5,82 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DYNASTY Store</title>
     <style>
+        /* Общие стили */
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             color: white;
             text-align: center;
-            background-color: black; /* Чёрный фон */
+            background: linear-gradient(45deg, #000000, #333333); /* Градиентный фон */
             overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
         }
+
+        /* Шапка */
         header {
             padding: 20px;
-            background: rgba(0, 0, 0, 0.7); /* Полупрозрачный чёрный фон для шапки */
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px); /* Размытие фона */
         }
         h1 {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: bold;
             color: gold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Тень для текста */
         }
 
-        /* Стили для карусели товаров */
+        /* Карусель товаров */
         .carousel {
             display: flex;
-            overflow-x: auto; /* Включаем горизонтальную прокрутку */
-            scroll-snap-type: x mandatory; /* Привязка к элементам при скролле */
-            scroll-behavior: smooth; /* Плавная прокрутка */
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
             gap: 20px;
             padding: 0 20px;
+            margin-top: 20px;
         }
         .carousel::-webkit-scrollbar {
-            display: none; /* Скрываем скроллбар */
+            display: none;
         }
+
+        /* Карточка товара */
         .product-card {
-            flex: 0 0 100%; /* Каждая карточка занимает всю ширину экрана */
+            flex: 0 0 100%;
             max-width: 100%;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #ffffff44;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             padding: 20px;
             margin: 20px 0;
-            scroll-snap-align: start; /* Элементы фиксируются при скролле */
-            transition: transform 0.2s;
+            scroll-snap-align: start;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .product-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
         }
         .product-image {
             width: 100%;
-            height: 300px; /* Высота изображения */
+            height: 300px;
             object-fit: cover;
             border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.1); /* Масштабирование картинки при наведении */
         }
         .product-name {
             font-size: 24px;
             margin: 10px 0;
+            color: white;
         }
         .product-price {
             font-size: 20px;
             color: gold;
+            margin-bottom: 20px;
         }
+
+        /* Кнопка "Купить" */
         .buy-button {
-            margin-top: 20px;
             padding: 10px 20px;
-            background-color: gold;
+            background: linear-gradient(45deg, gold, #ffcc00);
             color: black;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             font-size: 18px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
         }
         .buy-button:hover {
-            background-color: #d4af37;
+            transform: translateY(-5px);
+            background: linear-gradient(45deg, #ffcc00, gold);
         }
 
         /* Модальное окно */
         .modal {
-            display: none; /* По умолчанию скрыто */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -92,16 +113,18 @@
         }
         .modal-content {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #ffffff44;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             padding: 20px;
             width: 80%;
             max-width: 400px;
             text-align: left;
+            backdrop-filter: blur(10px);
         }
         .modal-title {
             font-size: 24px;
             margin-bottom: 20px;
+            color: gold;
         }
         .modal-option {
             margin: 10px 0;
@@ -109,9 +132,29 @@
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
         .modal-option:hover {
             background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Индикаторы карусели */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .carousel-indicator.active {
+            background: gold;
         }
     </style>
 </head>
@@ -152,9 +195,8 @@
         </div>
     </div>
 
-    <!-- Стрелки навигации -->
-    <button class="arrow arrow-left" onclick="scrollCarousel(-1)">&#8249;</button>
-    <button class="arrow arrow-right" onclick="scrollCarousel(1)">&#8250;</button>
+    <!-- Индикаторы карусели -->
+    <div class="carousel-indicators" id="carousel-indicators"></div>
 
     <!-- Модальное окно для выбора способа получения -->
     <div class="modal" id="pickup-modal">
@@ -188,17 +230,46 @@
     <script>
         // Функция для прокрутки карусели
         const carousel = document.getElementById('carousel');
-        const scrollCarousel = (direction) => {
-            const scrollAmount = direction * window.innerWidth; // Ширина экрана
-            carousel.scrollBy({
-                left: scrollAmount,
+        const indicators = document.getElementById('carousel-indicators');
+        let currentIndex = 0;
+
+        // Создание индикаторов
+        for (let i = 0; i < carousel.children.length; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('carousel-indicator');
+            if (i === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => scrollToIndex(i));
+            indicators.appendChild(indicator);
+        }
+
+        function scrollToIndex(index) {
+            carousel.scroll({
+                left: index * window.innerWidth,
                 behavior: 'smooth'
             });
-        };
+            updateIndicators(index);
+        }
+
+        function updateIndicators(index) {
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            indicators.forEach((indicator, i) => {
+                if (i === index) indicator.classList.add('active');
+                else indicator.classList.remove('active');
+            });
+        }
+
+        carousel.addEventListener('scroll', () => {
+            const scrollPosition = carousel.scrollLeft;
+            const index = Math.round(scrollPosition / window.innerWidth);
+            if (index !== currentIndex) {
+                currentIndex = index;
+                updateIndicators(index);
+            }
+        });
 
         // Открытие модального окна
         const openModal = (type, product) => {
-            localStorage.setItem('productName', product); // Сохраняем название товара
+            localStorage.setItem('productName', product);
             const modal = document.getElementById(`${type}-modal`);
             modal.style.display = 'flex';
         };
@@ -213,15 +284,14 @@
         const selectOption = (currentStep, option) => {
             if (currentStep === 'pickup') {
                 alert(`Вы выбрали способ получения: ${option === 'self' ? 'Самовывоз' : 'Доставка курьером'}`);
-                localStorage.setItem('deliveryMethod', option); // Сохраняем выбранный способ получения
+                localStorage.setItem('deliveryMethod', option);
                 closeModal();
-                openModal('payment'); // Переход к выбору способа оплаты
+                openModal('payment');
             } else if (currentStep === 'payment') {
-                const product = localStorage.getItem('productName'); // Получаем название товара
-                const deliveryMethod = localStorage.getItem('deliveryMethod'); // Получаем выбранный способ получения
-                const paymentMethod = option; // Способ оплаты
+                const product = localStorage.getItem('productName');
+                const deliveryMethod = localStorage.getItem('deliveryMethod');
+                const paymentMethod = option;
 
-                // Отправляем данные в Telegram
                 sendOrderToTelegram({
                     product,
                     deliveryMethod,
@@ -235,11 +305,10 @@
 
         // Функция для отправки данных в Telegram
         const sendOrderToTelegram = (orderData) => {
-            const botToken = '8090185279:AAH5J9QOJkU96VsTyXIJhIe4kbsrswue7M0'; // Токен вашего бота
-            const chatId = '380479732'; // Ваш личный chat_id
+            const botToken = 'ВАШ_ТОКЕН_БОТА';
+            const chatId = 'ВАШ_CHAT_ID';
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-            // Формируем текст сообщения
             const message = `
                 Новый заказ:
                 Товар: ${orderData.product}
@@ -247,7 +316,6 @@
                 Способ оплаты: ${orderData.paymentMethod}
             `;
 
-            // Отправляем запрос
             fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
