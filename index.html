@@ -1,34 +1,88 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynasty Store</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYNASTY Store</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        header {
+            padding: 20px;
+            background: linear-gradient(to bottom, #000000, #333333);
+        }
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: gold;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffffff44;
+            border-radius: 10px;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .product-name {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .product-price {
+            font-size: 16px;
+            color: gold;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
     <header>
-      <h1>Dynasty</h1> <!-- Название бренда -->
+        <h1>DYNASTY</h1>
     </header>
-
-    <main>
-      <section id="catalog" class="catalog">
-        <!-- Товары будут загружены сюда -->
-      </section>
-
-      <section id="cart" class="cart hidden">
-        <h2>Корзина</h2>
-        <ul id="cart-items"></ul>
-        <button id="checkout-button">Оформить заказ</button>
-      </section>
-    </main>
-
-    <footer>
-      <button id="toggle-cart">Корзина</button>
-    </footer>
-  </div>
-
-  <script src="app.js"></script>
+    <div class="product-grid">
+        <!-- Продукт 1 -->
+        <div class="product-card" onclick="alert('Вы выбрали продукт 1')">
+            <img src="https://via.placeholder.com/150" alt="Product 1" class="product-image">
+            <div class="product-name">Товар 1</div>
+            <div class="product-price">$99</div>
+        </div>
+        <!-- Продукт 2 -->
+        <div class="product-card" onclick="alert('Вы выбрали продукт 2')">
+            <img src="https://via.placeholder.com/150" alt="Product 2" class="product-image">
+            <div class="product-name">Товар 2</div>
+            <div class="product-price">$129</div>
+        </div>
+        <!-- Продукт 3 -->
+        <div class="product-card" onclick="alert('Вы выбрали продукт 3')">
+            <img src="https://via.placeholder.com/150" alt="Product 3" class="product-image">
+            <div class="product-name">Товар 3</div>
+            <div class="product-price">$79</div>
+        </div>
+        <!-- Продукт 4 -->
+        <div class="product-card" onclick="alert('Вы выбрали продукт 4')">
+            <img src="https://via.placeholder.com/150" alt="Product 4" class="product-image">
+            <div class="product-name">Товар 4</div>
+            <div class="product-price">$149</div>
+        </div>
+    </div>
 </body>
 </html>
