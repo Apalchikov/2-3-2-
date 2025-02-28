@@ -88,6 +88,16 @@
             backdrop-filter: blur(10px);
         }
 
+        /* Главная страница (витрина товаров) */
+        #shop-page {
+            padding-bottom: 80px; /* Отступ под нижнюю панель */
+            overflow-y: auto; /* Добавляем вертикальный скролл */
+            max-height: calc(100vh - 80px); /* Ограничиваем высоту под панель */
+        }
+        #shop-page::-webkit-scrollbar {
+            display: none; /* Скрываем скроллбар */
+        }
+
         /* Карусель товаров */
         .carousel {
             display: flex;
@@ -188,7 +198,7 @@
             display: none;
             padding: 20px;
             overflow-y: auto; /* Добавили вертикальную прокрутку */
-            max-height: calc(100vh - 120px); /* Ограничили высоту страницы, учитывая панель */
+            max-height: calc(100vh - 120px); /* Ограничили высоту под панель */
         }
         .cart-item {
             background: rgba(255, 255, 255, 0.1);
@@ -222,10 +232,8 @@
 
         /* Кнопка "Оформить заказ" */
         .checkout-button {
-            position: fixed; /* Фиксированная позиция */
-            bottom: 80px; /* Расположение над панелью */
-            left: 50%;
-            transform: translateX(-50%);
+            display: block;
+            margin: 20px auto 0; /* Расположение внизу корзины */
             padding: 15px 30px;
             background: linear-gradient(45deg, gold, #ffcc00);
             color: black;
@@ -235,20 +243,10 @@
             font-size: 20px;
             transition: transform 0.3s ease, background 0.3s ease;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-            z-index: 9; /* Выше, чем содержимое страницы, но ниже панели */
         }
         .checkout-button:hover {
             transform: translateY(-5px);
             background: linear-gradient(45deg, #ffcc00, gold);
-        }
-
-        /* Защита от закрытия через скроллинг */
-        .scrollable {
-            overflow-y: auto;
-            max-height: calc(100vh - 120px); /* Ограничиваем высоту для скролла */
-        }
-        .scrollable::-webkit-scrollbar {
-            display: none; /* Скрываем скроллбар */
         }
     </style>
 </head>
@@ -269,9 +267,10 @@
         <h1>DYNASTY</h1>
     </header>
 
-    <!-- Первая карусель товаров -->
+    <!-- Главная страница (витрина товаров) -->
     <div id="shop-page">
-        <div class="carousel scrollable" id="carousel-1">
+        <!-- Первая карусель товаров -->
+        <div class="carousel" id="carousel-1">
             <!-- Продукт 1 -->
             <div class="product-card">
                 <img src="https://static.insales-cdn.com/r/JBn0FfTLI1A/rs:fit:1000:0:1/q:100/plain/images/products/1/5852/655922908/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%BD%D0%B0%D1%8F_1.jpg@jpg" alt="Product 1" class="product-image">
@@ -303,7 +302,7 @@
         </div>
 
         <!-- Вторая карусель товаров -->
-        <div class="carousel scrollable" id="carousel-2">
+        <div class="carousel" id="carousel-2">
             <!-- Продукт 5 -->
             <div class="product-card">
                 <img src="https://via.placeholder.com/300x300" alt="Product 5" class="product-image">
@@ -338,7 +337,8 @@
     <!-- Страница корзины -->
     <div id="cart-page" class="cart-page">
         <h2>Корзина</h2>
-        <div id="cart-items" class="scrollable"></div>
+        <div id="cart-items"></div>
+        <button class="checkout-button">Оформить заказ</button>
     </div>
 
     <!-- Нижняя панель навигации -->
@@ -346,9 +346,6 @@
         <span class="nav-icon" onclick="switchPage('shop')" id="shop-icon">🏠</span>
         <span class="nav-icon" onclick="switchPage('cart')" id="cart-icon">🛒</span>
     </div>
-
-    <!-- Кнопка "Оформить заказ" -->
-    <button class="checkout-button" onclick="alert('Функция оформления заказа пока недоступна.')">Оформить заказ</button>
 
     <script>
         // Функция для переключения между страницами
@@ -383,6 +380,7 @@
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = '<p>Корзина пуста</p>';
+                document.querySelector('.checkout-button').style.display = 'none'; // Скрываем кнопку, если корзина пуста
                 return;
             }
 
@@ -395,6 +393,8 @@
                 `;
                 cartItemsContainer.appendChild(cartItem);
             });
+
+            document.querySelector('.checkout-button').style.display = 'block'; // Показываем кнопку, если есть товары
         };
 
         // Функция для удаления товара из корзины
