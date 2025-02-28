@@ -451,6 +451,23 @@
             .then(data => console.log('Заказ успешно отправлен:', data))
             .catch(error => console.error('Ошибка отправки заказа:', error));
         };
+
+    // Блокировка закрытия приложения при прокрутке
+    document.addEventListener('touchmove', function (event) {
+        // Проверяем, находится ли пользователь внутри карусели или другого скроллируемого элемента
+        const target = event.target;
+        const isScrollable = target.closest('.carousel') || target.closest('.modal-content');
+
+        if (isScrollable) {
+            // Если пользователь прокручивает карусель или модальное окно, разрешаем прокрутку
+            return;
+        }
+
+        // Иначе блокируем дефолтное поведение (закрытие приложения)
+        event.preventDefault();
+    }, { passive: false });
+
+    
     </script>
 </body>
 </html>
