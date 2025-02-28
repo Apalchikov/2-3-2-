@@ -124,13 +124,15 @@
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 5; /* Повысили zIndex, чтобы шапка оставалась на месте */
         }
 
         /* Главная страница (витрина товаров) */
         #shop-page {
             padding-bottom: 80px; /* Отступ под нижнюю панель */
             overflow-y: auto; /* Добавляем вертикальный скролл */
-            max-height: calc(100vh - 80px); /* Ограничиваем высоту под панель */
+            max-height: calc(100vh - 80px); /* Высота под панель */
         }
         #shop-page::-webkit-scrollbar {
             display: none; /* Скрываем скроллбар */
@@ -200,7 +202,7 @@
 
         /* Нижняя панель навигации */
         .nav-bar {
-            position: fixed; /* Зафиксировали панель */
+            position: fixed; /* Фиксированная панель */
             bottom: 0;
             left: 0;
             width: 100%;
@@ -228,7 +230,7 @@
         .cart-page {
             display: none;
             padding: 20px;
-            overflow-y: auto;
+            overflow-y: auto; /* Добавляем вертикальный скролл */
             max-height: calc(100vh - 80px); /* Высота под панель */
         }
         .cart-item {
@@ -383,7 +385,7 @@
         </div>
 
         <!-- Страница корзины -->
-        <div id="cart-page" class="cart-page">
+        <div id="cart-page" class="cart-page scrollable">
             <h2>Корзина</h2>
             <div id="cart-items"></div>
             <button class="checkout-button">Оформить заказ</button>
