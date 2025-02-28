@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DYNASTY Store</title>
+    <!-- Подключение Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         /* Общие стили */
         body {
@@ -14,6 +16,15 @@
             text-align: center;
             overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
             position: relative;
+        }
+
+        /* Шрифт для логотипа */
+        h1 {
+            font-family: 'Bebas Neue', cursive; /* Агрессивный шрифт */
+            font-size: 64px;
+            font-weight: bold;
+            color: gold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         /* Динамический фон (ночное небо) */
@@ -53,8 +64,8 @@
             position: absolute;
             top: 50px;
             right: 50px;
-            width: 100px; /* Уменьшили размер */
-            height: 100px; /* Уменьшили размер */
+            width: 100px;
+            height: 100px;
             background: radial-gradient(circle at 70% 30%, gold, transparent);
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
@@ -62,8 +73,8 @@
         .moon::before {
             content: '';
             position: absolute;
-            bottom: 40px; /* Сдвинули тень */
-            left: 40px; /* Сдвинули тень */
+            bottom: 40px;
+            left: 40px;
             width: 80px;
             height: 80px;
             background: black;
@@ -75,12 +86,6 @@
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-        }
-        h1 {
-            font-size: 48px;
-            font-weight: bold;
-            color: gold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         /* Карусель товаров */
@@ -153,6 +158,25 @@
             background: linear-gradient(45deg, #ffcc00, gold);
         }
 
+        /* Индикаторы карусели */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .carousel-indicator.active {
+            background: gold;
+        }
+
         /* Модальное окно */
         .modal {
             display: none;
@@ -206,25 +230,6 @@
             color: white;
             cursor: pointer;
         }
-
-        /* Индикаторы карусели */
-        .carousel-indicators {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .carousel-indicator {
-            width: 10px;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .carousel-indicator.active {
-            background: gold;
-        }
     </style>
 </head>
 <body>
@@ -244,8 +249,8 @@
         <h1>DYNASTY</h1>
     </header>
 
-    <!-- Карусель товаров -->
-    <div class="carousel" id="carousel">
+    <!-- Первая карусель товаров -->
+    <div class="carousel" id="carousel-1">
         <!-- Продукт 1 -->
         <div class="product-card">
             <img src="https://static.insales-cdn.com/r/JBn0FfTLI1A/rs:fit:1000:0:1/q:100/plain/images/products/1/5852/655922908/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%BD%D0%B0%D1%8F_1.jpg@jpg" alt="Product 1" class="product-image">
@@ -276,8 +281,41 @@
         </div>
     </div>
 
+    <!-- Вторая карусель товаров -->
+    <div class="carousel" id="carousel-2">
+        <!-- Продукт 5 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 5" class="product-image">
+            <div class="product-name">Товар 5</div>
+            <div class="product-price">$199</div>
+            <button class="buy-button" onclick="openModal('pickup', 'Товар 5')">Купить</button>
+        </div>
+        <!-- Продукт 6 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 6" class="product-image">
+            <div class="product-name">Товар 6</div>
+            <div class="product-price">$229</div>
+            <button class="buy-button" onclick="openModal('pickup', 'Товар 6')">Купить</button>
+        </div>
+        <!-- Продукт 7 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 7" class="product-image">
+            <div class="product-name">Товар 7</div>
+            <div class="product-price">$279</div>
+            <button class="buy-button" onclick="openModal('pickup', 'Товар 7')">Купить</button>
+        </div>
+        <!-- Продукт 8 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/300x300" alt="Product 8" class="product-image">
+            <div class="product-name">Товар 8</div>
+            <div class="product-price">$349</div>
+            <button class="buy-button" onclick="openModal('pickup', 'Товар 8')">Купить</button>
+        </div>
+    </div>
+
     <!-- Индикаторы карусели -->
-    <div class="carousel-indicators" id="carousel-indicators"></div>
+    <div class="carousel-indicators" id="carousel-indicators-1"></div>
+    <div class="carousel-indicators" id="carousel-indicators-2"></div>
 
     <!-- Модальное окно для выбора способа получения -->
     <div class="modal" id="pickup-modal">
@@ -312,42 +350,44 @@
 
     <script>
         // Функция для прокрутки карусели
-        const carousel = document.getElementById('carousel');
-        const indicators = document.getElementById('carousel-indicators');
-        let currentIndex = 0;
+        const carousels = document.querySelectorAll('.carousel');
+        carousels.forEach((carousel, index) => {
+            const indicators = document.getElementById(`carousel-indicators-${index + 1}`);
+            let currentIndex = 0;
 
-        // Создание индикаторов
-        for (let i = 0; i < carousel.children.length; i++) {
-            const indicator = document.createElement('div');
-            indicator.classList.add('carousel-indicator');
-            if (i === 0) indicator.classList.add('active');
-            indicator.addEventListener('click', () => scrollToIndex(i));
-            indicators.appendChild(indicator);
-        }
-
-        function scrollToIndex(index) {
-            carousel.scroll({
-                left: index * window.innerWidth,
-                behavior: 'smooth'
-            });
-            updateIndicators(index);
-        }
-
-        function updateIndicators(index) {
-            const indicators = document.querySelectorAll('.carousel-indicator');
-            indicators.forEach((indicator, i) => {
-                if (i === index) indicator.classList.add('active');
-                else indicator.classList.remove('active');
-            });
-        }
-
-        carousel.addEventListener('scroll', () => {
-            const scrollPosition = carousel.scrollLeft;
-            const index = Math.round(scrollPosition / window.innerWidth);
-            if (index !== currentIndex) {
-                currentIndex = index;
-                updateIndicators(index);
+            // Создание индикаторов
+            for (let i = 0; i < carousel.children.length; i++) {
+                const indicator = document.createElement('div');
+                indicator.classList.add('carousel-indicator');
+                if (i === 0) indicator.classList.add('active');
+                indicator.addEventListener('click', () => scrollToIndex(carousel, i));
+                indicators.appendChild(indicator);
             }
+
+            function scrollToIndex(carousel, index) {
+                carousel.scroll({
+                    left: index * window.innerWidth,
+                    behavior: 'smooth'
+                });
+                updateIndicators(indicators, index);
+            }
+
+            function updateIndicators(indicatorsContainer, index) {
+                const indicators = indicatorsContainer.children;
+                Array.from(indicators).forEach((indicator, i) => {
+                    if (i === index) indicator.classList.add('active');
+                    else indicator.classList.remove('active');
+                });
+            }
+
+            carousel.addEventListener('scroll', () => {
+                const scrollPosition = carousel.scrollLeft;
+                const index = Math.round(scrollPosition / window.innerWidth);
+                if (index !== currentIndex) {
+                    currentIndex = index;
+                    updateIndicators(indicators, index);
+                }
+            });
         });
 
         // Открытие модального окна
