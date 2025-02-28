@@ -158,23 +158,49 @@
             background: linear-gradient(45deg, #ffcc00, gold);
         }
 
-        /* Индикаторы карусели */
-        .carousel-indicators {
+        /* Нижняя панель навигации */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5);
         }
-        .carousel-indicator {
-            width: 10px;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            margin: 0 5px;
+        .nav-icon {
+            font-size: 24px;
+            color: white;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: color 0.3s ease;
         }
-        .carousel-indicator.active {
-            background: gold;
+        .nav-icon.active {
+            color: gold;
+        }
+
+        /* Страница корзины */
+        .cart-page {
+            display: none;
+            padding: 20px;
+        }
+        .cart-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .cart-item-name {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        .cart-item-price {
+            font-size: 16px;
+            color: gold;
         }
 
         /* Модальное окно */
@@ -249,73 +275,52 @@
         <h1>DYNASTY</h1>
     </header>
 
-    <!-- Первая карусель товаров -->
-    <div class="carousel" id="carousel-1">
-        <!-- Продукт 1 -->
-        <div class="product-card">
-            <img src="https://static.insales-cdn.com/r/JBn0FfTLI1A/rs:fit:1000:0:1/q:100/plain/images/products/1/5852/655922908/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%BD%D0%B0%D1%8F_1.jpg@jpg" alt="Product 1" class="product-image">
-            <div class="product-name">это футболка вася</div>
-            <div class="product-price">$999</div>
-            <button class="buy-button" onclick="openModal('pickup', 'это футболка вася')">Купить</button>
-        </div>
-        <!-- Продукт 2 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 2" class="product-image">
-            <div class="product-name">Товар 2</div>
-            <div class="product-price">$129</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 2')">Купить</button>
-        </div>
-        <!-- Продукт 3 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 3" class="product-image">
-            <div class="product-name">Товар 3</div>
-            <div class="product-price">$79</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 3')">Купить</button>
-        </div>
-        <!-- Продукт 4 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 4" class="product-image">
-            <div class="product-name">Товар 4</div>
-            <div class="product-price">$149</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 4')">Купить</button>
-        </div>
-    </div>
-
-    <!-- Вторая карусель товаров -->
-    <div class="carousel" id="carousel-2">
-        <!-- Продукт 5 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 5" class="product-image">
-            <div class="product-name">Товар 5</div>
-            <div class="product-price">$199</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 5')">Купить</button>
-        </div>
-        <!-- Продукт 6 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 6" class="product-image">
-            <div class="product-name">Товар 6</div>
-            <div class="product-price">$229</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 6')">Купить</button>
-        </div>
-        <!-- Продукт 7 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 7" class="product-image">
-            <div class="product-name">Товар 7</div>
-            <div class="product-price">$279</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 7')">Купить</button>
-        </div>
-        <!-- Продукт 8 -->
-        <div class="product-card">
-            <img src="https://via.placeholder.com/300x300" alt="Product 8" class="product-image">
-            <div class="product-name">Товар 8</div>
-            <div class="product-price">$349</div>
-            <button class="buy-button" onclick="openModal('pickup', 'Товар 8')">Купить</button>
+    <!-- Основная страница (витрина товаров) -->
+    <div id="shop-page">
+        <!-- Первая карусель товаров -->
+        <div class="carousel" id="carousel-1">
+            <!-- Продукт 1 -->
+            <div class="product-card">
+                <img src="https://static.insales-cdn.com/r/JBn0FfTLI1A/rs:fit:1000:0:1/q:100/plain/images/products/1/5852/655922908/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%BD%D0%B0%D1%8F_1.jpg@jpg" alt="Product 1" class="product-image">
+                <div class="product-name">это футболка вася</div>
+                <div class="product-price">$999</div>
+                <button class="buy-button" onclick="addToCart('это футболка вася')">Купить</button>
+            </div>
+            <!-- Продукт 2 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 2" class="product-image">
+                <div class="product-name">Товар 2</div>
+                <div class="product-price">$129</div>
+                <button class="buy-button" onclick="addToCart('Товар 2')">Купить</button>
+            </div>
+            <!-- Продукт 3 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 3" class="product-image">
+                <div class="product-name">Товар 3</div>
+                <div class="product-price">$79</div>
+                <button class="buy-button" onclick="addToCart('Товар 3')">Купить</button>
+            </div>
+            <!-- Продукт 4 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 4" class="product-image">
+                <div class="product-name">Товар 4</div>
+                <div class="product-price">$149</div>
+                <button class="buy-button" onclick="addToCart('Товар 4')">Купить</button>
+            </div>
         </div>
     </div>
 
-    <!-- Индикаторы карусели -->
-    <div class="carousel-indicators" id="carousel-indicators-1"></div>
-    <div class="carousel-indicators" id="carousel-indicators-2"></div>
+    <!-- Страница корзины -->
+    <div id="cart-page" class="cart-page">
+        <h2>Корзина</h2>
+        <div id="cart-items"></div>
+    </div>
+
+    <!-- Нижняя панель навигации -->
+    <div class="nav-bar">
+        <span class="nav-icon" onclick="switchPage('shop')" id="shop-icon">🏠</span>
+        <span class="nav-icon" onclick="switchPage('cart')" id="cart-icon">🛒</span>
+    </div>
 
     <!-- Модальное окно для выбора способа получения -->
     <div class="modal" id="pickup-modal">
@@ -349,55 +354,63 @@
     </div>
 
     <script>
-        // Функция для прокрутки карусели
-        const carousels = document.querySelectorAll('.carousel');
-        carousels.forEach((carousel, index) => {
-            const indicators = document.getElementById(`carousel-indicators-${index + 1}`);
-            let currentIndex = 0;
+        // Функция для переключения между страницами
+        const switchPage = (page) => {
+            document.getElementById('shop-page').style.display = page === 'shop' ? 'block' : 'none';
+            document.getElementById('cart-page').style.display = page === 'cart' ? 'block' : 'none';
 
-            // Создание индикаторов
-            for (let i = 0; i < carousel.children.length; i++) {
-                const indicator = document.createElement('div');
-                indicator.classList.add('carousel-indicator');
-                if (i === 0) indicator.classList.add('active');
-                indicator.addEventListener('click', () => scrollToIndex(carousel, i));
-                indicators.appendChild(indicator);
-            }
-
-            function scrollToIndex(carousel, index) {
-                carousel.scroll({
-                    left: index * window.innerWidth,
-                    behavior: 'smooth'
-                });
-                updateIndicators(indicators, index);
-            }
-
-            function updateIndicators(indicatorsContainer, index) {
-                const indicators = indicatorsContainer.children;
-                Array.from(indicators).forEach((indicator, i) => {
-                    if (i === index) indicator.classList.add('active');
-                    else indicator.classList.remove('active');
-                });
-            }
-
-            carousel.addEventListener('scroll', () => {
-                const scrollPosition = carousel.scrollLeft;
-                const index = Math.round(scrollPosition / window.innerWidth);
-                if (index !== currentIndex) {
-                    currentIndex = index;
-                    updateIndicators(indicators, index);
-                }
-            });
-        });
-
-        // Открытие модального окна
-        const openModal = (type, product) => {
-            localStorage.setItem('productName', product);
-            const modal = document.getElementById(`${type}-modal`);
-            modal.style.display = 'flex';
+            // Обновляем активный иконку в навбаре
+            document.getElementById('shop-icon').classList.toggle('active', page === 'shop');
+            document.getElementById('cart-icon').classList.toggle('active', page === 'cart');
         };
 
-        // Закрытие всех модальных окон
+        // Функция для добавления товара в корзину
+        const addToCart = (productName) => {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(productName);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            alert(`${productName} добавлен в корзину!`);
+        };
+
+        // Функция для отображения товаров в корзине
+        const loadCartItems = () => {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = ''; // Очищаем содержимое
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Корзина пуста</p>';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-name">${item}</div>
+                    <button class="remove-button" onclick="removeFromCart(${index})">Удалить</button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+        };
+
+        // Функция для удаления товара из корзины
+        const removeFromCart = (index) => {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (index >= 0 && index < cart.length) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCartItems(); // Обновляем список товаров в корзине
+            }
+        };
+
+        // Загрузка товаров в корзину при загрузке страницы
+        window.onload = () => {
+            loadCartItems();
+        };
+
+        // Функция для закрытия модальных окон
         const closeModal = () => {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => modal.style.display = 'none');
@@ -452,22 +465,17 @@
             .catch(error => console.error('Ошибка отправки заказа:', error));
         };
 
-    // Блокировка закрытия приложения при прокрутке
-    document.addEventListener('touchmove', function (event) {
-        // Проверяем, находится ли пользователь внутри карусели или другого скроллируемого элемента
-        const target = event.target;
-        const isScrollable = target.closest('.carousel') || target.closest('.modal-content');
+        // Блокировка закрытия приложения при прокрутке
+        document.addEventListener('touchmove', function (event) {
+            const target = event.target;
+            const isScrollable = target.closest('.carousel') || target.closest('.modal-content');
 
-        if (isScrollable) {
-            // Если пользователь прокручивает карусель или модальное окно, разрешаем прокрутку
-            return;
-        }
+            if (isScrollable) {
+                return;
+            }
 
-        // Иначе блокируем дефолтное поведение (закрытие приложения)
-        event.preventDefault();
-    }, { passive: false });
-
-    
+            event.preventDefault();
+        }, { passive: false });
     </script>
 </body>
 </html>
