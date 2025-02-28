@@ -156,7 +156,7 @@
             max-width: 80%;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px; /* Сделали радиус softer */
+            border-radius: 15px;
             padding: 15px;
             margin: 20px 0;
             scroll-snap-align: start;
@@ -166,24 +166,24 @@
         }
         .product-image {
             width: 100%;
-            height: 250px; /* Уменьшили высоту изображения */
+            height: 200px; /* Уменьшили высоту изображения */
             object-fit: cover;
             border-radius: 10px;
         }
         .product-name {
-            font-size: 20px; /* Уменьшили размер шрифта */
+            font-size: 20px;
             margin: 10px 0;
             color: white;
         }
         .product-price {
-            font-size: 18px; /* Уменьшили размер шрифта */
+            font-size: 18px;
             color: gold;
             margin-bottom: 15px;
         }
 
         /* Кнопка "Купить" */
         .buy-button {
-            padding: 8px 15px; /* Сделали кнопку компактнее */
+            padding: 8px 15px;
             background: linear-gradient(45deg, gold, #ffcc00);
             color: black;
             border: none;
@@ -204,13 +204,13 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 80px; /* Установили фиксированную высоту */
+            height: 80px; /* Фиксированная высота */
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0; /* Убрали внутренние отступы */
+            padding: 0;
             box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5);
             z-index: 10;
         }
@@ -279,6 +279,15 @@
             transform: translateY(-3px);
             background: linear-gradient(45deg, #ffcc00, gold);
         }
+
+        /* Блокировка случайного закрытия приложения */
+        .scrollable {
+            overflow-y: auto;
+            max-height: calc(100vh - 80px); /* Высота под панель */
+        }
+        .scrollable::-webkit-scrollbar {
+            display: none; /* Скрываем скроллбар */
+        }
     </style>
 </head>
 <body>
@@ -307,7 +316,7 @@
         </header>
 
         <!-- Главная страница (витрина товаров) -->
-        <div id="shop-page">
+        <div id="shop-page" class="scrollable">
             <!-- Первая карусель товаров -->
             <div class="carousel" id="carousel-1">
                 <!-- Продукт 1 -->
@@ -456,6 +465,14 @@
                 document.getElementById('main-content').style.display = 'block'; // Показываем основной контент
                 loadCartItems(); // Загружаем товары в корзину
             }, 2000); // Время показа splash screen (2 секунды)
+
+            // Блокировка случайного закрытия приложения
+            document.body.addEventListener('touchmove', (event) => {
+                const target = event.target;
+                if (!target.closest('.scrollable')) {
+                    event.preventDefault(); // Запрещаем прокрутку вне скроллируемых элементов
+                }
+            }, { passive: false });
         };
     </script>
 </body>
