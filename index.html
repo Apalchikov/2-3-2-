@@ -50,53 +50,6 @@
             100% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Анимированный логотип */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background: black;
-            z-index: 9999;
-        }
-        .splash-logo-top, .splash-logo-bottom {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 64px;
-            color: rgba(255, 215, 0, 0); /* Начальный цвет — прозрачный */
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0);
-            animation: logo-animation 2s ease-in-out forwards; /* Анимация */
-        }
-        .splash-logo-top {
-            margin-bottom: -10px; /* Сближаем части логотипа */
-        }
-        .splash-logo-bottom {
-            margin-top: -10px; /* Сближаем части логотипа */
-        }
-        @keyframes logo-animation {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Основной контент (скрытый во время анимации) */
-        #main-content {
-            display: none; /* Сначала скрыто */
-        }
-
         /* Луна */
         .moon {
             position: absolute;
@@ -124,8 +77,13 @@
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            position: relative;
-            z-index: 5; /* Повысили zIndex, чтобы шапка оставалась на месте */
+        }
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 64px;
+            font-weight: bold;
+            color: gold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         /* Главная страница (витрина товаров) */
@@ -203,7 +161,7 @@
         /* Нижняя панель навигации */
         .nav-bar {
             position: fixed; /* Фиксированная панель */
-            bottom: 0;
+            bottom: 0; /* В самом низу экрана */
             left: 0;
             width: 100%;
             height: 80px; /* Фиксированная высота */
@@ -305,16 +263,10 @@
         <div class="star" style="top: 90%; left: 40%; width: 3px; height: 3px;"></div>
     </div>
 
-    <!-- Анимированный вход (splash screen) -->
-    <div class="splash-screen" id="splash-screen">
-        <div class="splash-logo-top">DY</div>
-        <div class="splash-logo-bottom">NASTY</div>
-    </div>
-
     <!-- Основной контент -->
     <div id="main-content">
         <header>
-            <h1>DYNASTY</h1>
+            <h1>DYNASTY</h1> <!-- Статичная надпись -->
         </header>
 
         <!-- Главная страница (витрина товаров) -->
@@ -458,24 +410,13 @@
             }
         };
 
-        // Загрузка товаров в корзину при загрузке страницы
-        window.onload = () => {
-            // Показываем splash screen
-            const splashScreen = document.getElementById('splash-screen');
-            setTimeout(() => {
-                splashScreen.style.display = 'none'; // Скрываем splash screen
-                document.getElementById('main-content').style.display = 'block'; // Показываем основной контент
-                loadCartItems(); // Загружаем товары в корзину
-            }, 2000); // Время показа splash screen (2 секунды)
-
-            // Блокировка случайного закрытия приложения
-            document.body.addEventListener('touchmove', (event) => {
-                const target = event.target;
-                if (!target.closest('.scrollable')) {
-                    event.preventDefault(); // Запрещаем прокрутку вне скроллируемых элементов
-                }
-            }, { passive: false });
-        };
+        // Блокировка случайного закрытия приложения
+        document.body.addEventListener('touchmove', (event) => {
+            const target = event.target;
+            if (!target.closest('.scrollable')) {
+                event.preventDefault(); // Запрещаем прокрутку вне скроллируемых элементов
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
