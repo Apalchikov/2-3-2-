@@ -239,60 +239,6 @@
             transform: translateY(-5px);
             background: linear-gradient(45deg, #ffcc00, gold);
         }
-
-        /* Модальное окно */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-        .modal-content {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            width: 80%;
-            max-width: 400px;
-            text-align: left;
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        .modal-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: gold;
-        }
-        .modal-option {
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .modal-option:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -382,44 +328,13 @@
     <div id="cart-page" class="cart-page">
         <h2>Корзина</h2>
         <div id="cart-items"></div>
-        <button class="checkout-button" onclick="openModal('pickup')">Оформить заказ</button>
+        <button class="checkout-button">Оформить заказ</button>
     </div>
 
     <!-- Нижняя панель навигации -->
     <div class="nav-bar">
         <span class="nav-icon" onclick="switchPage('shop')" id="shop-icon">🏠</span>
         <span class="nav-icon" onclick="switchPage('cart')" id="cart-icon">🛒</span>
-    </div>
-
-    <!-- Модальное окно для выбора способа получения -->
-    <div class="modal" id="pickup-modal">
-        <div class="modal-content">
-            <button class="close-button" onclick="closeModal()">×</button>
-            <div class="modal-title">Выберите способ получения:</div>
-            <div class="modal-option" onclick="selectOption('pickup', 'self')">
-                Самовывоз
-            </div>
-            <div class="modal-option" onclick="selectOption('pickup', 'courier')">
-                Доставка курьером
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно для выбора способа оплаты -->
-    <div class="modal" id="payment-modal">
-        <div class="modal-content">
-            <button class="close-button" onclick="closeModal()">×</button>
-            <div class="modal-title">Выберите способ оплаты:</div>
-            <div class="modal-option" onclick="selectOption('payment', 'transfer')">
-                Перевод
-            </div>
-            <div class="modal-option" onclick="selectOption('payment', 'cash')">
-                Наличка при получении
-            </div>
-            <div class="modal-option" onclick="selectOption('payment', 'crypto')">
-                Криптовалюта
-            </div>
-        </div>
     </div>
 
     <script>
@@ -483,75 +398,6 @@
         window.onload = () => {
             loadCartItems();
         };
-
-        // Функция для закрытия модальных окон
-        const closeModal = () => {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => modal.style.display = 'none');
-        };
-
-        // Выбор опции
-        const selectOption = (currentStep, option) => {
-            if (currentStep === 'pickup') {
-                alert(`Вы выбрали способ получения: ${option === 'self' ? 'Самовывоз' : 'Доставка курьером'}`);
-                localStorage.setItem('deliveryMethod', option);
-                closeModal();
-                openModal('payment');
-            } else if (currentStep === 'payment') {
-                const product = localStorage.getItem('productName');
-                const deliveryMethod = localStorage.getItem('deliveryMethod');
-                const paymentMethod = option;
-
-                sendOrderToTelegram({
-                    product,
-                    deliveryMethod,
-                    paymentMethod
-                });
-
-                alert('Заказ успешно оформлен!');
-                closeModal();
-            }
-        };
-
-        // Функция для отправки данных в Telegram
-        const sendOrderToTelegram = (orderData) => {
-            const botToken = 'ВАШ_ТОКЕН_БОТА';
-            const chatId = 'ВАШ_CHAT_ID';
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-            const message = `
-                Новый заказ:
-                Товар: ${orderData.product}
-                Способ получения: ${orderData.deliveryMethod}
-                Способ оплаты: ${orderData.paymentMethod}
-            `;
-
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => console.log('Заказ успешно отправлен:', data))
-            .catch(error => console.error('Ошибка отправки заказа:', error));
-        };
-
-        // Блокировка закрытия приложения при прокрутке
-        document.addEventListener('touchmove', function (event) {
-            const target = event.target;
-            const isScrollable = target.closest('.carousel') || 
-                                 target.closest('.modal-content') || 
-                                 target.closest('#cart-items');
-
-            if (isScrollable) {
-                return;
-            }
-
-            event.preventDefault();
-        }, { passive: false });
     </script>
 </body>
 </html>
