@@ -161,19 +161,21 @@
         /* Нижняя панель навигации */
         .nav-bar {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 20px; /* Увеличили отступ */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%; /* Увеличили ширину */
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 10px 0;
+            padding: 15px 0; /* Увеличили высоту */
             box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5);
+            border-radius: 20px; /* Сделали панель более круглой */
         }
         .nav-icon {
-            font-size: 24px;
+            font-size: 32px; /* Увеличили размер иконок */
             color: white;
             cursor: pointer;
             transition: color 0.3s ease;
@@ -186,6 +188,8 @@
         .cart-page {
             display: none;
             padding: 20px;
+            overflow-y: auto; /* Добавили вертикальную прокрутку */
+            max-height: calc(100vh - 100px); /* Ограничили высоту страницы */
         }
         .cart-item {
             background: rgba(255, 255, 255, 0.1);
@@ -193,6 +197,9 @@
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .cart-item-name {
             font-size: 18px;
@@ -201,6 +208,36 @@
         .cart-item-price {
             font-size: 16px;
             color: gold;
+        }
+        .remove-button {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .remove-button:hover {
+            color: darkred;
+        }
+
+        /* Кнопка "Оформить заказ" */
+        .checkout-button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, gold, #ffcc00);
+            color: black;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        .checkout-button:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(45deg, #ffcc00, gold);
         }
 
         /* Модальное окно */
@@ -275,9 +312,8 @@
         <h1>DYNASTY</h1>
     </header>
 
-    <!-- Основная страница (витрина товаров) -->
+    <!-- Первая карусель товаров -->
     <div id="shop-page">
-        <!-- Первая карусель товаров -->
         <div class="carousel" id="carousel-1">
             <!-- Продукт 1 -->
             <div class="product-card">
@@ -308,12 +344,45 @@
                 <button class="buy-button" onclick="addToCart('Товар 4')">Купить</button>
             </div>
         </div>
+
+        <!-- Вторая карусель товаров -->
+        <div class="carousel" id="carousel-2">
+            <!-- Продукт 5 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 5" class="product-image">
+                <div class="product-name">Товар 5</div>
+                <div class="product-price">$199</div>
+                <button class="buy-button" onclick="addToCart('Товар 5')">Купить</button>
+            </div>
+            <!-- Продукт 6 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 6" class="product-image">
+                <div class="product-name">Товар 6</div>
+                <div class="product-price">$229</div>
+                <button class="buy-button" onclick="addToCart('Товар 6')">Купить</button>
+            </div>
+            <!-- Продукт 7 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 7" class="product-image">
+                <div class="product-name">Товар 7</div>
+                <div class="product-price">$279</div>
+                <button class="buy-button" onclick="addToCart('Товар 7')">Купить</button>
+            </div>
+            <!-- Продукт 8 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x300" alt="Product 8" class="product-image">
+                <div class="product-name">Товар 8</div>
+                <div class="product-price">$349</div>
+                <button class="buy-button" onclick="addToCart('Товар 8')">Купить</button>
+            </div>
+        </div>
     </div>
 
     <!-- Страница корзины -->
     <div id="cart-page" class="cart-page">
         <h2>Корзина</h2>
         <div id="cart-items"></div>
+        <button class="checkout-button" onclick="openModal('pickup')">Оформить заказ</button>
     </div>
 
     <!-- Нижняя панель навигации -->
@@ -362,6 +431,10 @@
             // Обновляем активный иконку в навбаре
             document.getElementById('shop-icon').classList.toggle('active', page === 'shop');
             document.getElementById('cart-icon').classList.toggle('active', page === 'cart');
+
+            if (page === 'cart') {
+                loadCartItems(); // Загружаем товары в корзину при переходе
+            }
         };
 
         // Функция для добавления товара в корзину
@@ -371,6 +444,7 @@
             localStorage.setItem('cart', JSON.stringify(cart));
 
             alert(`${productName} добавлен в корзину!`);
+            loadCartItems(); // Обновляем список товаров в корзине сразу после добавления
         };
 
         // Функция для отображения товаров в корзине
@@ -389,7 +463,7 @@
                 cartItem.className = 'cart-item';
                 cartItem.innerHTML = `
                     <div class="cart-item-name">${item}</div>
-                    <button class="remove-button" onclick="removeFromCart(${index})">Удалить</button>
+                    <span class="remove-button" onclick="removeFromCart(${index})">❌</span>
                 `;
                 cartItemsContainer.appendChild(cartItem);
             });
@@ -468,7 +542,9 @@
         // Блокировка закрытия приложения при прокрутке
         document.addEventListener('touchmove', function (event) {
             const target = event.target;
-            const isScrollable = target.closest('.carousel') || target.closest('.modal-content');
+            const isScrollable = target.closest('.carousel') || 
+                                 target.closest('.modal-content') || 
+                                 target.closest('#cart-items');
 
             if (isScrollable) {
                 return;
