@@ -161,18 +161,17 @@
         /* Нижняя панель навигации */
         .nav-bar {
             position: fixed;
-            bottom: 20px; /* Увеличили отступ */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%; /* Увеличили ширину */
+            bottom: 0; /* Прикрепляем к нижней части экрана */
+            left: 0;
+            width: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 15px 0; /* Увеличили высоту */
+            padding: 15px 0;
             box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5);
-            border-radius: 20px; /* Сделали панель более круглой */
+            z-index: 10; /* Панель поверх всего остального */
         }
         .nav-icon {
             font-size: 32px; /* Увеличили размер иконок */
@@ -189,7 +188,7 @@
             display: none;
             padding: 20px;
             overflow-y: auto; /* Добавили вертикальную прокрутку */
-            max-height: calc(100vh - 100px); /* Ограничили высоту страницы */
+            max-height: calc(100vh - 120px); /* Ограничили высоту страницы, учитывая панель */
         }
         .cart-item {
             background: rgba(255, 255, 255, 0.1);
@@ -223,8 +222,10 @@
 
         /* Кнопка "Оформить заказ" */
         .checkout-button {
-            display: block;
-            margin: 20px auto;
+            position: fixed; /* Фиксированная позиция */
+            bottom: 80px; /* Расположение над панелью */
+            left: 50%;
+            transform: translateX(-50%);
             padding: 15px 30px;
             background: linear-gradient(45deg, gold, #ffcc00);
             color: black;
@@ -234,10 +235,20 @@
             font-size: 20px;
             transition: transform 0.3s ease, background 0.3s ease;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            z-index: 9; /* Выше, чем содержимое страницы, но ниже панели */
         }
         .checkout-button:hover {
             transform: translateY(-5px);
             background: linear-gradient(45deg, #ffcc00, gold);
+        }
+
+        /* Защита от закрытия через скроллинг */
+        .scrollable {
+            overflow-y: auto;
+            max-height: calc(100vh - 120px); /* Ограничиваем высоту для скролла */
+        }
+        .scrollable::-webkit-scrollbar {
+            display: none; /* Скрываем скроллбар */
         }
     </style>
 </head>
@@ -260,7 +271,7 @@
 
     <!-- Первая карусель товаров -->
     <div id="shop-page">
-        <div class="carousel" id="carousel-1">
+        <div class="carousel scrollable" id="carousel-1">
             <!-- Продукт 1 -->
             <div class="product-card">
                 <img src="https://static.insales-cdn.com/r/JBn0FfTLI1A/rs:fit:1000:0:1/q:100/plain/images/products/1/5852/655922908/%D1%84%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%BD%D0%B0%D1%8F_1.jpg@jpg" alt="Product 1" class="product-image">
@@ -292,7 +303,7 @@
         </div>
 
         <!-- Вторая карусель товаров -->
-        <div class="carousel" id="carousel-2">
+        <div class="carousel scrollable" id="carousel-2">
             <!-- Продукт 5 -->
             <div class="product-card">
                 <img src="https://via.placeholder.com/300x300" alt="Product 5" class="product-image">
@@ -327,8 +338,7 @@
     <!-- Страница корзины -->
     <div id="cart-page" class="cart-page">
         <h2>Корзина</h2>
-        <div id="cart-items"></div>
-        <button class="checkout-button">Оформить заказ</button>
+        <div id="cart-items" class="scrollable"></div>
     </div>
 
     <!-- Нижняя панель навигации -->
@@ -336,6 +346,9 @@
         <span class="nav-icon" onclick="switchPage('shop')" id="shop-icon">🏠</span>
         <span class="nav-icon" onclick="switchPage('cart')" id="cart-icon">🛒</span>
     </div>
+
+    <!-- Кнопка "Оформить заказ" -->
+    <button class="checkout-button" onclick="alert('Функция оформления заказа пока недоступна.')">Оформить заказ</button>
 
     <script>
         // Функция для переключения между страницами
